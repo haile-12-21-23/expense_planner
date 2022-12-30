@@ -17,21 +17,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({
+class MyHomePage extends StatelessWidget {
+  MyHomePage({
     super.key,
   });
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transactions = [
     Transaction(
       id: 't1',
@@ -46,6 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now(),
     )
   ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,17 +67,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const TextField(
-                        decoration: InputDecoration(labelText: 'Title')),
-                    const TextField(
-                      decoration: InputDecoration(labelText: 'Amount'),
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Title'),
+                      controller: titleController,
+                      // onChanged: (value) {
+                      //   inputTitle = value;
+                      // },
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Amount'),
+                      controller: amountController,
+                      // onChanged: (value) {
+                      //   inputAmount = value;
+                      // },
                     ),
                     TextButton(
                       child: const Text(
                         'Add Transaction',
                         style: TextStyle(color: Colors.purple),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        print(titleController.text);
+                        print(amountController.text);
+                      },
                     )
                   ],
                 ),
