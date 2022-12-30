@@ -1,3 +1,4 @@
+import './transaction.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,13 +16,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
+  final List<Transaction> transactions = [
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 75.97,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Weekly Grocery',
+      amount: 15.97,
+      date: DateTime.now(),
+    )
+  ];
+  MyHomePage({
     super.key,
   });
 
@@ -37,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: const Text('Flutter App'),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
               width: double.infinity,
@@ -47,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const Card(
+              color: Colors.red,
               child: Text('LIST OF TX'),
             )
           ],
