@@ -22,6 +22,15 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  MyHomePage({
+    super.key,
+  });
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transactions = [
     Transaction(
       id: 't1',
@@ -36,15 +45,6 @@ class MyHomePage extends StatefulWidget {
       date: DateTime.now(),
     )
   ];
-  MyHomePage({
-    super.key,
-  });
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('CHART!'),
               ),
             ),
-            const Card(
-              color: Colors.red,
-              child: Text('LIST OF TX'),
-            )
+            Column(
+                children: transactions.map((tx) {
+              return Card(
+                  child: Text(
+                tx.title,
+              ));
+            }).toList())
           ],
         ));
   }
