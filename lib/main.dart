@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({
+  const MyHomePage({
     super.key,
   });
 
@@ -66,8 +66,25 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
                 children: transactions.map((tx) {
               return Card(
-                  child: Text(
-                tx.title,
+                  child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2)),
+                    child: Text(
+                      tx.amount.toString(),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(tx.title),
+                      Text(tx.date.toString()),
+                    ],
+                  ),
+                ],
               ));
             }).toList())
           ],
