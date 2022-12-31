@@ -1,8 +1,9 @@
+import 'dart:ui';
+
 import 'package:expense_planner/model/transaction.dart';
 import 'package:expense_planner/widgets/new_transaction.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
 
-import './widgets/user_transaction.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,8 +18,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Personal Expense',
-      theme: ThemeData(primarySwatch: Colors.purple, accentColor: Colors.amber),
-      home: MyHomePage(),
+      theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.amber,
+          fontFamily: 'QuickSand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: const TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  titleLarge: const TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)))),
+      home: const MyHomePage(),
     );
   }
 }
@@ -73,13 +88,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Personal Expense'), actions: [
-        IconButton(
-          tooltip: 'Add new Transactions',
-          icon: const Icon(Icons.add),
-          onPressed: () => startAddNewTransaction(context),
-        )
-      ]),
+      appBar: AppBar(
+          title: const Text(
+            'Personal Expense',
+            style: TextStyle(fontFamily: 'Open Sans'),
+          ),
+          actions: [
+            IconButton(
+              tooltip: 'Add new Transactions',
+              icon: const Icon(Icons.add),
+              onPressed: () => startAddNewTransaction(context),
+            )
+          ]),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
