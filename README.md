@@ -1,6 +1,7 @@
 # expense_planner
 
 A new Flutter project.
+class stopped on lectures 90 making lists scrollable.
 
 ## Getting Started
 
