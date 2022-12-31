@@ -16,10 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Personal Expense',
+      theme: ThemeData(primarySwatch: Colors.purple, accentColor: Colors.amber),
       home: MyHomePage(),
     );
   }
@@ -75,8 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter App'), actions: [
+      appBar: AppBar(title: const Text('Personal Expense'), actions: [
         IconButton(
+          tooltip: 'Add new Transactions',
           icon: const Icon(Icons.add),
           onPressed: () => startAddNewTransaction(context),
         )
@@ -99,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Add new Transactions',
         child: const Icon(Icons.add),
         onPressed: () => startAddNewTransaction(context),
       ),
