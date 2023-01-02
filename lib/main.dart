@@ -1,8 +1,9 @@
 import 'dart:ui';
 
-import 'package:expense_planner/model/transaction.dart';
-import 'package:expense_planner/widgets/new_transaction.dart';
-import 'package:expense_planner/widgets/transaction_list.dart';
+import '../model/transaction.dart';
+import '../widgets/chart.dart';
+import '../widgets/new_transaction.dart';
+import '../widgets/transaction_list.dart';
 
 import 'package:flutter/material.dart';
 
@@ -49,19 +50,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> userTransactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 75.97,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Grocery',
-      amount: 15.97,
-      date: DateTime.now(),
-    )
+    // Transaction(
+    //   id: 't1',
+    //   title: 'New Shoes',
+    //   amount: 75.97,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Weekly Grocery',
+    //   amount: 15.97,
+    //   date: DateTime.now(),
+    // )
   ];
+  Iterable<Transaction> get recentTransactions {
+    return userTransactions.where((element) {
+      return element.date.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
   void addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
         id: 'tx${userTransactions.length + 2}',
@@ -104,14 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: const Card(
-                color: Colors.blue,
-                elevation: 5,
-                child: Text('CHART!'),
-              ),
-            ),
+            Chart(recentTransactions: recentTransactions.toList()),
             TransactionList(transactions: userTransactions)
           ],
         ),
