@@ -1,14 +1,18 @@
+import 'package:expense_planner/constants/utils.dart';
 import 'package:expense_planner/model/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-  const TransactionList({super.key, required this.transactions});
   final List<Transaction> transactions;
+  final Function deleteTx;
+  const TransactionList(
+      {super.key, required this.transactions, required this.deleteTx});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 500,
       child: transactions.isEmpty
           ? Column(
               children: [
@@ -51,6 +55,35 @@ class TransactionList extends StatelessWidget {
                     ),
                     subtitle: Text(
                         DateFormat.yMMMd().format(transactions[index].date)),
+                    trailing: IconButton(
+                      tooltip: 'Delete from list',
+                      color: Theme.of(context).errorColor,
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        asyncConfirmDialog(
+                            context: context,
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    deleteTx(transactions[index].id);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Delete',
+                                      style: TextStyle(
+                                        color: Theme.of(context).errorColor,
+                                      ))),
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Cancel',
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                      )))
+                            ],
+                            title:
+                                '${transactions[index].title} will be deleted!',
+                            content: 'Make sure!, this is can\'t undo');
+                      },
+                    ),
                   ),
                 );
               },
