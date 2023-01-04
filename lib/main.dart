@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/services.dart';
+
 import '../model/transaction.dart';
 import '../widgets/chart.dart';
 import '../widgets/new_transaction.dart';
@@ -8,6 +10,9 @@ import '../widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 
@@ -64,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   date: DateTime.now(),
     // )
   ];
+  bool showChart = false;
   Iterable<Transaction> get recentTransactions {
     return userTransactions.where((element) {
       return element.date.isAfter(
@@ -108,28 +114,58 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+        title: const Text(
+          'Personal Expense',
+          style: TextStyle(fontFamily: 'Open Sans'),
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Add new Transactions',
+            icon: const Icon(Icons.add),
+            onPressed: () => startAddNewTransaction(context),
+          )
+        ]);
     return Scaffold(
-      appBar: AppBar(
-          title: const Text(
-            'Personal Expense',
-            style: TextStyle(fontFamily: 'Open Sans'),
-          ),
-          actions: [
-            IconButton(
-              tooltip: 'Add new Transactions',
-              icon: const Icon(Icons.add),
-              onPressed: () => startAddNewTransaction(context),
-            )
-          ]),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(recentTransactions: recentTransactions.toList()),
-            TransactionList(
-              transactions: userTransactions,
-              deleteTx: deleteTransaction,
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Show Chart'),
+                Switch(
+                  value: showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            showChart
+                ? SizedBox(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.7,
+                    child: Chart(
+                      recentTransactions: recentTransactions.toList(),
+                    ),
+                  )
+                : SizedBox(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.7,
+                    child: TransactionList(
+                      transactions: userTransactions,
+                      deleteTx: deleteTransaction,
+                    ),
+                  )
           ],
         ),
       ),
