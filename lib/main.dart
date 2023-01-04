@@ -114,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final appBar = AppBar(
         title: const Text(
           'Personal Expense',
@@ -126,46 +128,60 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => startAddNewTransaction(context),
           )
         ]);
+    final transactionListWidget = SizedBox(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.7,
+      child: TransactionList(
+        transactions: userTransactions,
+        deleteTx: deleteTransaction,
+      ),
+    );
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Show Chart'),
-                Switch(
-                  value: showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      showChart = value;
-                    });
-                  },
+            if (isLandScape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Show Chart'),
+                  Switch(
+                    value: showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        showChart = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            if (!isLandScape)
+              SizedBox(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.3,
+                child: Chart(
+                  recentTransactions: recentTransactions.toList(),
                 ),
-              ],
-            ),
-            showChart
-                ? SizedBox(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.7,
-                    child: Chart(
-                      recentTransactions: recentTransactions.toList(),
-                    ),
-                  )
-                : SizedBox(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.7,
-                    child: TransactionList(
-                      transactions: userTransactions,
-                      deleteTx: deleteTransaction,
-                    ),
-                  )
+              ),
+            if (!isLandScape) transactionListWidget,
+            if (isLandScape)
+              showChart
+                  ? SizedBox(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: Chart(
+                        recentTransactions: recentTransactions.toList(),
+                      ),
+                    )
+                  : transactionListWidget
           ],
         ),
       ),
